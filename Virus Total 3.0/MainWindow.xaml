@@ -1,0 +1,287 @@
+﻿<Window x:Name="frmVirusTotal" x:Class="Virus_Total_3._0.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Virus_Total_3._0"
+        mc:Ignorable="d"
+        Title="Virus Total 3.0" Height="800" Width="1000" Loaded="startup" Icon="favicon.png" WindowState="Normal" ResizeMode="CanMinimize">
+    <Grid x:Name="mainGrid">
+        <TabControl x:Name="tabAll" HorizontalAlignment="Left" Height="680" Margin="40,40,0,0" VerticalAlignment="Top" Width="910">
+            <TabItem x:Name="tabIFile" Header="FILE" Width="226" Height="30" Margin="3,0,2,0" MouseEnter="changeToBlueTabIFile" MouseLeave="changeToDarkTabIFile">
+                <Grid>
+                    <Grid x:Name="skpFile" AllowDrop="True" Drop="fileDropped" Background="LightGray" Margin="20,0,280,580" MouseLeftButtonUp="lblDropFileChooseFile">
+                        <Label x:Name="lblDropFile" Content="Click or drop here your file" Margin="0,20,0,0" HorizontalAlignment="Center"/>
+                    </Grid>
+                    <Grid Margin="640,0,10,580">
+                        <Label x:Name="lblFileLastModificationDate" Content="" HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top"/>
+                        <Label x:Name="lblFileLastSubmissionDate" Content="" HorizontalAlignment="Left" Margin="10,20,0,0" VerticalAlignment="Top"/>
+                        <Label x:Name="lblFileName" Content="" HorizontalAlignment="Left" Margin="10,35,0,0" VerticalAlignment="Top"/>
+                    </Grid>
+                    <StackPanel Margin="20,80,20,0">
+                        <ListView x:Name="lstScanGoodFile" HorizontalAlignment="Left" Height="260" VerticalAlignment="Top" Width="865" Background="Azure">
+                            <ListView.Resources>
+                                <Style TargetType="{x:Type ListViewItem}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding category}" Value="undetected">
+                                            <Setter Property="Background" Value="GreenYellow"></Setter>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ListView.Resources>
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="Category" Width="144" DisplayMemberBinding="{Binding category}"/>
+                                    <GridViewColumn Header="Engine" Width="144" DisplayMemberBinding="{Binding engine_name}"/>
+                                    <GridViewColumn Header="Update" Width="144" DisplayMemberBinding="{Binding engine_update}"/>
+                                    <GridViewColumn Header="Version" Width="144" DisplayMemberBinding="{Binding engine_version}"/>
+                                    <GridViewColumn Header="Method" Width="144" DisplayMemberBinding="{Binding method}"/>
+                                    <GridViewColumn Header="Result" Width="144" DisplayMemberBinding="{Binding result}"/>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </StackPanel>
+                    <StackPanel Margin="20,360,20,0">
+                        <ListView x:Name="lstScanBadFile" HorizontalAlignment="Left" Height="240" VerticalAlignment="Top" Width="865" Background="Azure">
+                            <ListView.Resources>
+                                <Style TargetType="{x:Type ListViewItem}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding category}" Value="malicious">
+                                            <Setter Property="Background" Value="red"></Setter>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding category}" Value="undetected">
+                                            <Setter Property="Background" Value="Aqua"></Setter>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding category}" Value="suspicious">
+                                            <Setter Property="Background" Value="OrangeRed"></Setter>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ListView.Resources>
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="Category" Width="144" DisplayMemberBinding="{Binding category}"/>
+                                    <GridViewColumn Header="Engine" Width="144" DisplayMemberBinding="{Binding engine_name}"/>
+                                    <GridViewColumn Header="Update" Width="144" DisplayMemberBinding="{Binding engine_update}"/>
+                                    <GridViewColumn Header="Version" Width="144" DisplayMemberBinding="{Binding engine_version}"/>
+                                    <GridViewColumn Header="Method" Width="144" DisplayMemberBinding="{Binding method}"/>
+                                    <GridViewColumn Header="Result" Width="144" DisplayMemberBinding="{Binding result}"/>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </StackPanel>
+                    <Grid Margin="0,610,0,0">
+                        <Label x:Name="lblFileConfirmed_timeout" HorizontalAlignment="Left" Margin="20,2,0,0" VerticalAlignment="Top"/>
+                        <Label x:Name="lblFileFailure" HorizontalAlignment="Left" Margin="160,2,0,0" VerticalAlignment="Top"/>
+                        <Label x:Name="lblFileHarmless" HorizontalAlignment="Left" Margin="230,2,0,0" VerticalAlignment="Top" Foreground="Green"/>
+                        <Label x:Name="lblFileMalicious" HorizontalAlignment="Left" Margin="330,2,0,0" VerticalAlignment="Top" Foreground="Red"/>
+                        <Label x:Name="lblFileSuspicious" HorizontalAlignment="Left" Margin="440,2,0,0" VerticalAlignment="Top" Foreground="OrangeRed"/>
+                        <Label x:Name="lblFileTimeout" HorizontalAlignment="Left" Margin="550,2,0,0" VerticalAlignment="Top"/>
+                        <Label x:Name="lblFileTypeUnsupported" HorizontalAlignment="Left" Margin="650,2,0,0" VerticalAlignment="Top" Foreground="Blue"/>
+                        <Label x:Name="lblFileUndetected" HorizontalAlignment="Left" Margin="800,2,0,0" VerticalAlignment="Top" Foreground="Gray"/>
+                    </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem x:Name="tabIUrl" Header="URL" Width="227" Height="30" Margin="3,0,2,0" MouseLeave="changeToDarkTabIUrl" MouseEnter="changeToBlueTabIUrl">
+                <Grid>
+                    <TextBox x:Name="txtURL" HorizontalAlignment="Left" Height="20" Margin="20,20,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="560"/>
+                    <Button x:Name="btnURL" Height="20" Margin="20,50,325,570" Content="Scan URL" Click="btnURL_Click"></Button>
+                    <Grid Margin="640,0,20,580">
+                        <Label x:Name="lblURLLastModificationDate" Content="" HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top"/>
+                        <Label x:Name="lblURLLastSubmissionDate" Content="" HorizontalAlignment="Left" Margin="10,20,0,0" VerticalAlignment="Top"/>
+                        <Label x:Name="lblURL" Content="" HorizontalAlignment="Left" Margin="10,35,0,0" VerticalAlignment="Top"/>
+                    </Grid>
+                    <StackPanel Margin="20,80,20,0">
+                        <ListView x:Name="lstScanGoodURL" HorizontalAlignment="Left" Height="260" VerticalAlignment="Top" Width="865" Background="Azure">
+                            <ListView.Resources>
+                                <Style TargetType="{x:Type ListViewItem}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding category}" Value="harmless">
+                                            <Setter Property="Background" Value="GreenYellow"></Setter>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ListView.Resources>
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="Category" Width="215" DisplayMemberBinding="{Binding category}"/>
+                                    <GridViewColumn Header="Engine" Width="215" DisplayMemberBinding="{Binding engine_name}"/>
+                                    <GridViewColumn Header="Method" Width="215" DisplayMemberBinding="{Binding method}"/>
+                                    <GridViewColumn Header="Result" Width="215" DisplayMemberBinding="{Binding result}"/>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </StackPanel>
+                    <StackPanel Margin="20,360,20,0">
+                        <ListView x:Name="lstScanBadURL" HorizontalAlignment="Left" Height="240" VerticalAlignment="Top" Width="865" Background="Azure">
+                            <ListView.Resources>
+                                <Style TargetType="{x:Type ListViewItem}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding category}" Value="malicious">
+                                            <Setter Property="Background" Value="red"></Setter>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding category}" Value="undetected">
+                                            <Setter Property="Background" Value="Aqua"></Setter>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding category}" Value="suspicious">
+                                            <Setter Property="Background" Value="OrangeRed"></Setter>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ListView.Resources>
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="Category" Width="215" DisplayMemberBinding="{Binding category}"/>
+                                    <GridViewColumn Header="Engine" Width="215" DisplayMemberBinding="{Binding engine_name}"/>
+                                    <GridViewColumn Header="Method" Width="215" DisplayMemberBinding="{Binding method}"/>
+                                    <GridViewColumn Header="Result" Width="215" DisplayMemberBinding="{Binding result}"/>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </StackPanel>
+                    <Grid Margin="0,610,0,0">
+                        <Label x:Name="lblURLHarmless" HorizontalAlignment="Left" Margin="122,2,0,0" VerticalAlignment="Top" Foreground="Green"/>
+                        <Label x:Name="lblURLMalicious" HorizontalAlignment="Left" Margin="244,2,0,0" VerticalAlignment="Top" Foreground="Red"/>
+                        <Label x:Name="lblURLSuspicious" HorizontalAlignment="Left" Margin="366,2,0,0" VerticalAlignment="Top" Foreground="OrangeRed"/>
+                        <Label x:Name="lblURLTimeout" HorizontalAlignment="Left" Margin="488,2,0,0" VerticalAlignment="Top"/>
+                        <Label x:Name="lblURLUndetected" HorizontalAlignment="Left" Margin="610,2,0,0" VerticalAlignment="Top" Foreground="Blue"/>
+                    </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem x:Name="tabIDomain" Header="DOMAIN" Width="226" Height="30" Margin="3,0,2,0" MouseEnter="changeToBlueTabIDomain" MouseLeave="changeToDarkTabIDomain">
+                <Grid>
+                    <TextBox x:Name="txtDomain" HorizontalAlignment="Left" Height="20" Margin="20,20,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="560"/>
+                    <Button x:Name="btnDomain" Height="20" Margin="20,50,325,570" Content="Scan Domain" Click="btnDomain_Click"></Button>
+                    <Grid Margin="640,0,20,580">
+                        <Label x:Name="lblDomainLastModificationDate" Content="" HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top"/>
+                        <Label x:Name="lblDomain" Content="" HorizontalAlignment="Left" Margin="10,35,0,0" VerticalAlignment="Top"/>
+                    </Grid>
+                    <StackPanel Margin="20,80,20,0">
+                        <ListView x:Name="lstScanGoodDomain" HorizontalAlignment="Left" Height="260" VerticalAlignment="Top" Width="600" Background="Azure">
+                            <ListView.Resources>
+                                <Style TargetType="{x:Type ListViewItem}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding category}" Value="harmless">
+                                            <Setter Property="Background" Value="GreenYellow"></Setter>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ListView.Resources>
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="Category" Width="150" DisplayMemberBinding="{Binding category}"/>
+                                    <GridViewColumn Header="Engine" Width="150" DisplayMemberBinding="{Binding engine_name}"/>
+                                    <GridViewColumn Header="Method" Width="150" DisplayMemberBinding="{Binding method}"/>
+                                    <GridViewColumn Header="Result" Width="150" DisplayMemberBinding="{Binding result}"/>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </StackPanel>
+                    <RichTextBox x:Name="rtbDomain" Margin="640,80,20,40" ScrollViewer.VerticalScrollBarVisibility="Visible"/>
+                    <StackPanel Margin="20,360,20,0">
+                        <ListView x:Name="lstScanBadDomain" HorizontalAlignment="Left" Height="240" VerticalAlignment="Top" Width="600" Background="Azure">
+                            <ListView.Resources>
+                                <Style TargetType="{x:Type ListViewItem}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding category}" Value="malicious">
+                                            <Setter Property="Background" Value="red"></Setter>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding category}" Value="undetected">
+                                            <Setter Property="Background" Value="Aqua"></Setter>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding category}" Value="suspicious">
+                                            <Setter Property="Background" Value="OrangeRed"></Setter>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ListView.Resources>
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="Category" Width="150" DisplayMemberBinding="{Binding category}"/>
+                                    <GridViewColumn Header="Engine" Width="150" DisplayMemberBinding="{Binding engine_name}"/>
+                                    <GridViewColumn Header="Method" Width="150" DisplayMemberBinding="{Binding method}"/>
+                                    <GridViewColumn Header="Result" Width="150" DisplayMemberBinding="{Binding result}"/>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </StackPanel>
+                    <Grid Margin="0,610,0,0">
+                        <Label x:Name="lblDomainHarmless" HorizontalAlignment="Left" Margin="122,2,0,0" VerticalAlignment="Top" Foreground="Green"/>
+                        <Label x:Name="lblDomainMalicious" HorizontalAlignment="Left" Margin="244,2,0,0" VerticalAlignment="Top" Foreground="Red"/>
+                        <Label x:Name="lblDomainSuspicious" HorizontalAlignment="Left" Margin="366,2,0,0" VerticalAlignment="Top" Foreground="OrangeRed"/>
+                        <Label x:Name="lblDomainTimeout" HorizontalAlignment="Left" Margin="488,2,0,0" VerticalAlignment="Top"/>
+                        <Label x:Name="lblDomainUndetected" HorizontalAlignment="Left" Margin="610,2,0,0" VerticalAlignment="Top" Foreground="Blue"/>
+                    </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem x:Name="tabIIP" Header="IP" Width="227" Height="30" Margin="3,0,2,0" MouseEnter="changeToBlueTabIIP" MouseLeave="changeToDarkTabIIP">
+                <Grid>
+                    <TextBox x:Name="txtIP" HorizontalAlignment="Left" Height="20" Margin="20,20,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="560"/>
+                    <Button x:Name="btnIP" Height="20" Margin="20,50,325,570" Content="Scan IP" Click="btnIP_Click"></Button>
+                    <Grid Margin="640,0,20,580">
+                        <Label x:Name="lblIPLastModificationDate" Content="" HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top"/>
+                        <Label x:Name="lblIP" Content="" HorizontalAlignment="Left" Margin="10,35,0,0" VerticalAlignment="Top"/>
+                    </Grid>
+                    <StackPanel Margin="20,80,20,0">
+                        <ListView x:Name="lstScanGoodIP" HorizontalAlignment="Left" Height="260" VerticalAlignment="Top" Width="600" Background="Azure">
+                            <ListView.Resources>
+                                <Style TargetType="{x:Type ListViewItem}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding category}" Value="harmless">
+                                            <Setter Property="Background" Value="GreenYellow"></Setter>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ListView.Resources>
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="Category" Width="150" DisplayMemberBinding="{Binding category}"/>
+                                    <GridViewColumn Header="Engine" Width="150" DisplayMemberBinding="{Binding engine_name}"/>
+                                    <GridViewColumn Header="Method" Width="150" DisplayMemberBinding="{Binding method}"/>
+                                    <GridViewColumn Header="Result" Width="150" DisplayMemberBinding="{Binding result}"/>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </StackPanel>
+                    <RichTextBox x:Name="rtbIP" Margin="640,80,20,40" ScrollViewer.VerticalScrollBarVisibility="Visible"/>
+                    <StackPanel Margin="20,360,20,0">
+                        <ListView x:Name="lstScanBadIP" HorizontalAlignment="Left" Height="240" VerticalAlignment="Top" Width="600" Background="Azure">
+                            <ListView.Resources>
+                                <Style TargetType="{x:Type ListViewItem}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding category}" Value="malicious">
+                                            <Setter Property="Background" Value="red"></Setter>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding category}" Value="undetected">
+                                            <Setter Property="Background" Value="Aqua"></Setter>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding category}" Value="suspicious">
+                                            <Setter Property="Background" Value="OrangeRed"></Setter>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ListView.Resources>
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="Category" Width="150" DisplayMemberBinding="{Binding category}"/>
+                                    <GridViewColumn Header="Engine" Width="150" DisplayMemberBinding="{Binding engine_name}"/>
+                                    <GridViewColumn Header="Method" Width="150" DisplayMemberBinding="{Binding method}"/>
+                                    <GridViewColumn Header="Result" Width="150" DisplayMemberBinding="{Binding result}"/>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </StackPanel>
+                    <Grid Margin="0,610,0,0">
+                        <Label x:Name="lblIPHarmless" HorizontalAlignment="Left" Margin="122,2,0,0" VerticalAlignment="Top" Foreground="Green"/>
+                        <Label x:Name="lblIPMalicious" HorizontalAlignment="Left" Margin="244,2,0,0" VerticalAlignment="Top" Foreground="Red"/>
+                        <Label x:Name="lblIPSuspicious" HorizontalAlignment="Left" Margin="366,2,0,0" VerticalAlignment="Top" Foreground="OrangeRed"/>
+                        <Label x:Name="lblIPTimeout" HorizontalAlignment="Left" Margin="488,2,0,0" VerticalAlignment="Top"/>
+                        <Label x:Name="lblIPUndetected" HorizontalAlignment="Left" Margin="610,2,0,0" VerticalAlignment="Top" Foreground="Blue"/>
+                    </Grid>
+                </Grid>
+            </TabItem>
+        </TabControl>
+        <Button x:Name="btnSaveLog" Content="SAVE LOG" HorizontalAlignment="Left" Margin="40,740,0,0" VerticalAlignment="Top" Width="910" Visibility="Visible" Click="btnSaveLog_Click"/>
+        <Button x:Name="btnLoadLog" Content="LOAD LOG" HorizontalAlignment="Left" Margin="40,15,0,0" VerticalAlignment="Top" Width="910" Click="btnLoadLog_Click"/>
+    </Grid>
+</Window>
